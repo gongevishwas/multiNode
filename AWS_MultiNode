@@ -6,7 +6,7 @@ ssh -i Downloads/file.pem ubuntu@public_dns_address
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
 # Copy public key on to the DataCenter main server
-scp -i shiv.pem shiv.pem ubuntu@public_dns:~/.ssh
+scp -i multi.pem multi.pem ubuntu@public_dns:~/.ssh
 
 # Create a Hadoop user for accessing HDFS
 sudo addgroup hadoop
@@ -18,10 +18,10 @@ sudo su hduser
 ssh-keygen
 cat id_rsa.pub >> authorized_keys
 
-# Copy the instance public key (shiv.pem) to hduser's directory
+# Copy the instance public key (multi.pem) to hduser's directory
 sudo su
-cp /home/ubuntu/.ssh/shiv.pem /home/hduser/.ssh/
-chown hduser:hadoop /home/hduser/.ssh/shiv.pem
+cp /home/ubuntu/.ssh/new.pem /home/hduser/.ssh/
+chown hduser:hadoop /home/hduser/.ssh/new.pem
 exit
 
 # Install Java 8 (Open-JDK)
@@ -32,8 +32,8 @@ java -version
 # Download and Install Hadoop
 
 wget https://dlcdn.apache.org/hadoop/common/stable/hadoop-3.3.5.tar.gz
-tar -xzvf hadoop-3.3.5.tar.gz
-sudo mv hadoop-3.3.5 /usr/local/hadoop
+tar -xzvf hadoop-3.3.6.tar.gz
+sudo mv hadoop-3.3.6 /usr/local/hadoop
 sudo chown -R hduser:hadoop /usr/local/hadoop
 
 # Set Enviornment Variable
@@ -126,7 +126,7 @@ sudo service ssh restart
 
 # Configure .profile (make sure you are on NN) 
  nano .profile
- eval `ssh-agent` ssh-add /home/hduser/.ssh/shiv.pem
+ eval `ssh-agent` ssh-add /home/hduser/.ssh/abc.pem
 
  source .profile
 
@@ -135,14 +135,14 @@ sudo service ssh restart
 Create 4 nodes from this image
 
 #sudo nano /etc/hosts and include these lines:FQDN
-172.31.47.46 ip-172-31-47-46.ec2.internal rm
-172.31.44.111 ip-172-31-44-111.ec2.internal 1dn
-172.31.46.80 ip-172-31-46-80.ec2.internal 2dn
-172.31.38.148 ip-172-31-38-148.ec2.internal 3dn
-172.31.47.137 ip-172-31-47-137.ec2.internal nn
 
+172.31.29.56 ip-172-31-29-56.ec2.internal nn
+172.31.27.96 ip-172-31-27-96.ec2.internal rm
+172.31.18.137 ip-172-31-18-137.ec2.internal 1dn
+172.31.23.79 ip-172-31-23-79.ec2.internal 2dn
+172.31.16.236 ip-172-31-16-236.ec2.internal 3dn
 
-Do this for all nodes 
+Do above task for all nodes 
 
 
 # Install and Configure dsh
